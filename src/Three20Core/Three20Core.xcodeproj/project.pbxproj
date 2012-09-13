@@ -536,6 +536,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6E6454021184BDD500F08CB1 /* Project.xcconfig */;
 			buildSettings = {
+				"ARCHS[sdk=iphoneos*]" = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -603,6 +604,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6E6454021184BDD500F08CB1 /* Project.xcconfig */;
 			buildSettings = {
+				"ARCHS[sdk=iphoneos*]" = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -615,6 +617,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6E6454021184BDD500F08CB1 /* Project.xcconfig */;
 			buildSettings = {
+				"ARCHS[sdk=iphoneos*]" = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
