@@ -27,7 +27,7 @@
 
 
 // Remove GSEvent and UITouchAdditions from Release builds
-#ifdef DEBUG
+#ifdef DEBUG_TOUCHES
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -390,7 +390,8 @@ TT_FIX_CATEGORY_BUG(UIViewAdditions)
 }
 
 
-#ifdef DEBUG
+#ifdef DEBUG_TOUCHES
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)simulateTapAtPoint:(CGPoint)location {
@@ -435,11 +436,13 @@ TT_FIX_CATEGORY_BUG(UIViewAdditions)
   CGPoint centerEnd = CGPointMake(floor(screenFrame.size.width/2 - self.width/2),
                                   screenFrame.size.height - floor(self.height/2));
 
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   return [NSDictionary dictionaryWithObjectsAndKeys:
           [NSValue valueWithCGRect:bounds], UIKeyboardBoundsUserInfoKey,
           [NSValue valueWithCGPoint:centerBegin], UIKeyboardCenterBeginUserInfoKey,
           [NSValue valueWithCGPoint:centerEnd], UIKeyboardCenterEndUserInfoKey,
           nil];
+#pragma GCC diagnostic warning "-Wdeprecated-declarations"
 }
 
 
