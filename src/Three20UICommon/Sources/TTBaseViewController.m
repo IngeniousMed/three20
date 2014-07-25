@@ -68,7 +68,6 @@
 - (void)dealloc {
   TTDCONDITIONLOG(TTDFLAG_VIEWCONTROLLERS, @"DEALLOC %@", self);
 
-  [self unsetCommonProperties];
 
   TT_RELEASE_SAFELY(_navigationBarTintColor);
   TT_RELEASE_SAFELY(_frozenState);
