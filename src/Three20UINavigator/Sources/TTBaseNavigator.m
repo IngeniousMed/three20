@@ -349,7 +349,7 @@ __attribute__((weak_import));
   _popoverController =  [[TTUIPopoverControllerClass() alloc]
                          initWithContentViewController: controller];
   if (_popoverController != nil) {
-    [_popoverController setDelegate:self];
+    [(UIPopoverController *)_popoverController setDelegate:self];
   }
 
   if (nil != sourceButton) {
