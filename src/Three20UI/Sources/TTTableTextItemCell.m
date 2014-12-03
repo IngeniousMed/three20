@@ -33,7 +33,7 @@
 #import "Three20Style/TTGlobalStyle.h"
 
 static const CGFloat kMaxLabelHeight = 2000.0f;
-static const UILineBreakMode kLineBreakMode = UILineBreakModeWordWrap;
+static const NSLineBreakMode kLineBreakMode = NSLineBreakByWordWrapping;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -82,18 +82,21 @@ static const UILineBreakMode kLineBreakMode = UILineBreakModeWordWrap;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 + (CGFloat)tableView:(UITableView*)tableView rowHeightForObject:(id)object {
-  TTTableTextItem* item = object;
-
-  CGFloat width = tableView.width - (kTableCellHPadding*2 + [tableView tableCellMargin]*2);
-  UIFont* font = [self textFontForItem:item];
-  CGSize size = [item.text sizeWithFont:font
-                      constrainedToSize:CGSizeMake(width, CGFLOAT_MAX)
-                          lineBreakMode:kLineBreakMode];
-  if (size.height > kMaxLabelHeight) {
-    size.height = kMaxLabelHeight;
-  }
-
-  return size.height + kTableCellVPadding*2;
+    TTTableTextItem* item = object;
+    CGFloat width = tableView.width - (kTableCellHPadding*2 + [tableView tableCellMargin]*2);
+    UIFont* font = [self textFontForItem:item];
+    NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.lineBreakMode = kLineBreakMode;
+    CGSize size = [item.text
+                   boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+                   options:NSStringDrawingUsesLineFragmentOrigin
+                   attributes:@{NSFontAttributeName:font,
+                                NSParagraphStyleAttributeName:paragraphStyle}
+                   context:nil].size;
+    if (size.height > kMaxLabelHeight) {
+        size.height = kMaxLabelHeight;
+    }
+    return size.height + kTableCellVPadding*2;
 }
 
 
@@ -130,34 +133,34 @@ static const UILineBreakMode kLineBreakMode = UILineBreakModeWordWrap;
     if ([object isKindOfClass:[TTTableButton class]]) {
       self.textLabel.font = TTSTYLEVAR(tableButtonFont);
       self.textLabel.textColor = TTSTYLEVAR(linkTextColor);
-      self.textLabel.textAlignment = UITextAlignmentCenter;
+      self.textLabel.textAlignment = NSTextAlignmentCenter;
       self.accessoryType = UITableViewCellAccessoryNone;
       self.selectionStyle = TTSTYLEVAR(tableSelectionStyle);
 
     } else if ([object isKindOfClass:[TTTableLink class]]) {
       self.textLabel.font = TTSTYLEVAR(tableFont);
       self.textLabel.textColor = TTSTYLEVAR(linkTextColor);
-      self.textLabel.textAlignment = UITextAlignmentLeft;
+      self.textLabel.textAlignment = NSTextAlignmentLeft;
 
     } else if ([object isKindOfClass:[TTTableSummaryItem class]]) {
       self.textLabel.font = TTSTYLEVAR(tableSummaryFont);
       self.textLabel.textColor = TTSTYLEVAR(tableSubTextColor);
-      self.textLabel.textAlignment = UITextAlignmentCenter;
+      self.textLabel.textAlignment = NSTextAlignmentCenter;
 
     } else if ([object isKindOfClass:[TTTableLongTextItem class]]) {
       self.textLabel.font = TTSTYLEVAR(font);
       self.textLabel.textColor = TTSTYLEVAR(textColor);
-      self.textLabel.textAlignment = UITextAlignmentLeft;
+      self.textLabel.textAlignment = NSTextAlignmentLeft;
 
     } else if ([object isKindOfClass:[TTTableGrayTextItem class]]) {
       self.textLabel.font = TTSTYLEVAR(font);
       self.textLabel.textColor = TTSTYLEVAR(tableSubTextColor);
-      self.textLabel.textAlignment = UITextAlignmentLeft;
+      self.textLabel.textAlignment = NSTextAlignmentLeft;
 
     } else {
       self.textLabel.font = TTSTYLEVAR(tableFont);
       self.textLabel.textColor = TTSTYLEVAR(textColor);
-      self.textLabel.textAlignment = UITextAlignmentLeft;
+      self.textLabel.textAlignment = NSTextAlignmentLeft;
     }
   }
 }

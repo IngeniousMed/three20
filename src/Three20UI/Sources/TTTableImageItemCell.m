@@ -90,37 +90,36 @@ static const CGFloat kDefaultImageSize = 50.0f;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 + (CGFloat)tableView:(UITableView*)tableView rowHeightForObject:(id)object {
-  TTTableImageItem* imageItem = object;
-
-  UIImage* image = imageItem.imageURL
-  ? [[TTURLCache sharedCache] imageForURL:imageItem.imageURL] : nil;
-  if (!image) {
-    image = imageItem.defaultImage;
-  }
-
-  CGFloat imageHeight, imageWidth;
-  TTImageStyle* style = [imageItem.imageStyle firstStyleOfClass:[TTImageStyle class]];
-  if (style && !CGSizeEqualToSize(style.size, CGSizeZero)) {
-    imageWidth = style.size.width + kKeySpacing;
-    imageHeight = style.size.height;
-
-  } else {
-    imageWidth = image
-    ? image.size.width + kKeySpacing
-    : (imageItem.imageURL ? kDefaultImageSize + kKeySpacing : 0);
-    imageHeight = image
-    ? image.size.height
-    : (imageItem.imageURL ? kDefaultImageSize : 0);
-  }
-
-  CGFloat maxWidth = tableView.width - (imageWidth + kTableCellHPadding*2 + kTableCellMargin*2);
-
-  CGSize textSize = [imageItem.text sizeWithFont:[self fontForImageItem:imageItem]
-                               constrainedToSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
-                                   lineBreakMode:UILineBreakModeTailTruncation];
-
-  CGFloat contentHeight = textSize.height > imageHeight ? textSize.height : imageHeight;
-  return contentHeight + kTableCellVPadding*2;
+    TTTableImageItem* imageItem = object;
+    UIImage* image = imageItem.imageURL
+    ? [[TTURLCache sharedCache] imageForURL:imageItem.imageURL] : nil;
+    if (!image) {
+        image = imageItem.defaultImage;
+    }
+    CGFloat imageHeight, imageWidth;
+    TTImageStyle* style = [imageItem.imageStyle firstStyleOfClass:[TTImageStyle class]];
+    if (style && !CGSizeEqualToSize(style.size, CGSizeZero)) {
+        imageWidth = style.size.width + kKeySpacing;
+        imageHeight = style.size.height;
+    }
+    else {
+        imageWidth = image
+        ? image.size.width + kKeySpacing
+        : (imageItem.imageURL ? kDefaultImageSize + kKeySpacing : 0);
+        imageHeight = image
+        ? image.size.height
+        : (imageItem.imageURL ? kDefaultImageSize : 0);
+    }
+    CGFloat maxWidth = tableView.width - (imageWidth + kTableCellHPadding*2 + kTableCellMargin*2);
+    NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+    CGSize textSize = [imageItem.text
+                       boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
+                       options:NSStringDrawingUsesLineFragmentOrigin
+                       attributes:@{NSFontAttributeName:[self fontForImageItem:imageItem],
+                                    NSParagraphStyleAttributeName:paragraphStyle} context:nil].size;
+    CGFloat contentHeight = textSize.height > imageHeight ? textSize.height : imageHeight;
+    return contentHeight + kTableCellVPadding*2;
 }
 
 
@@ -235,11 +234,11 @@ static const CGFloat kDefaultImageSize = 50.0f;
     self.textLabel.font = [[self class] fontForImageItem:item];
 
     if ([_item isKindOfClass:[TTTableRightImageItem class]]) {
-      self.textLabel.textAlignment = UITextAlignmentCenter;
+      self.textLabel.textAlignment = NSTextAlignmentCenter;
       self.accessoryType = UITableViewCellAccessoryNone;
 
     } else {
-      self.textLabel.textAlignment = UITextAlignmentLeft;
+      self.textLabel.textAlignment = NSTextAlignmentLeft;
     }
   }
 }

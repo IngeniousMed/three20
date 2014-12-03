@@ -48,9 +48,9 @@
   if (self) {
     _shadowOffset = CGSizeZero;
     _numberOfLines = 1;
-    _textAlignment = UITextAlignmentCenter;
+    _textAlignment = NSTextAlignmentCenter;
     _verticalAlignment = UIControlContentVerticalAlignmentCenter;
-    _lineBreakMode = UILineBreakModeTailTruncation;
+    _lineBreakMode = NSLineBreakByTruncatingTail;
   }
 
   return self;
@@ -168,12 +168,18 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (CGSize)sizeOfText:(NSString*)text withFont:(UIFont*)font size:(CGSize)size {
   if (_numberOfLines == 1) {
-    return [text sizeWithFont:font];
+    return [text sizeWithAttributes:@{NSFontAttributeName:font}];
 
   } else {
     CGSize maxSize = CGSizeMake(size.width, CGFLOAT_MAX);
-    CGSize textSize = [text sizeWithFont:font constrainedToSize:maxSize
-                           lineBreakMode:_lineBreakMode];
+      NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+      paragraphStyle.lineBreakMode = _lineBreakMode;
+    CGSize textSize = [text boundingRectWithSize:
+                       maxSize
+                                         options:NSStringDrawingUsesLineFragmentOrigin
+                                      attributes:@{NSFontAttributeName:font,
+                                                   NSParagraphStyleAttributeName:paragraphStyle}
+                                         context:nil].size;
     if (_numberOfLines) {
       CGFloat maxHeight = font.ttLineHeight * _numberOfLines;
       if (textSize.height > maxHeight) {
@@ -188,7 +194,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (CGRect)rectForText:(NSString*)text forSize:(CGSize)size withFont:(UIFont*)font {
   CGRect rect = CGRectZero;
-  if (_textAlignment == UITextAlignmentLeft
+  if (_textAlignment == NSTextAlignmentLeft
       && _verticalAlignment == UIControlContentVerticalAlignmentTop) {
     rect.size = size;
 
@@ -201,10 +207,10 @@
 
     rect.size = textSize;
 
-    if (_textAlignment == UITextAlignmentCenter) {
+    if (_textAlignment == NSTextAlignmentCenter) {
       rect.origin.x = round(size.width/2 - textSize.width/2);
 
-    } else if (_textAlignment == UITextAlignmentRight) {
+    } else if (_textAlignment == NSTextAlignmentRight) {
       rect.origin.x = size.width - textSize.width;
     }
 
@@ -264,8 +270,12 @@
   } else {
     CGRect titleRect = [self rectForText:text forSize:rect.size withFont:font];
     titleRect = CGRectOffset(titleRect, rect.origin.x, rect.origin.y);
-    rect.size = [text drawInRect:titleRect withFont:font lineBreakMode:_lineBreakMode
-                       alignment:_textAlignment];
+      NSMutableParagraphStyle * paragraphStyleDrawInRect = [[NSMutableParagraphStyle alloc] init];
+      paragraphStyleDrawInRect.lineBreakMode = _lineBreakMode;
+      paragraphStyleDrawInRect.alignment = _textAlignment;
+      [text drawInRect:titleRect
+        withAttributes:@{NSFontAttributeName:font,
+                         NSParagraphStyleAttributeName:paragraphStyleDrawInRect}];
     context.contentFrame = rect;
   }
 

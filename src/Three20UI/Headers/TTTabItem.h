@@ -21,15 +21,15 @@
 @interface TTTabItem : NSObject {
   NSString* _title;
   NSString* _icon;
-  id        _object;
-  int       _badgeNumber;
+  id _object;
+  NSInteger _badgeNumber;
   TTTabBar* _tabBar;
 }
 
-@property (nonatomic, copy)   NSString* title;
-@property (nonatomic, copy)   NSString* icon;
-@property (nonatomic, retain) id        object;
-@property (nonatomic)         int       badgeNumber;
+@property (nonatomic, copy) NSString* title;
+@property (nonatomic, copy) NSString* icon;
+@property (nonatomic, retain) id object;
+@property (nonatomic) NSInteger badgeNumber;
 
 - (id)initWithTitle:(NSString*)title;
 

@@ -59,7 +59,11 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)drawInRect:(CGRect)rect {
-  [_text drawInRect:rect withFont:_font lineBreakMode:UILineBreakModeClip];
+    NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.lineBreakMode = NSLineBreakByClipping;
+    [_text drawInRect:rect
+       withAttributes:@{NSFontAttributeName:_font,
+                        NSParagraphStyleAttributeName:paragraphStyle}];
 }
 
 

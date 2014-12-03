@@ -44,8 +44,8 @@ static const CGFloat kKeyWidth = 75.0f;
     self.textLabel.textColor = TTSTYLEVAR(linkTextColor);
     self.textLabel.highlightedTextColor = TTSTYLEVAR(highlightedTextColor);
 	self.textLabel.backgroundColor = TTSTYLEVAR(backgroundTextColor);
-    self.textLabel.textAlignment = UITextAlignmentRight;
-    self.textLabel.lineBreakMode = UILineBreakModeTailTruncation;
+    self.textLabel.textAlignment = NSTextAlignmentRight;
+    self.textLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     self.textLabel.numberOfLines = 1;
     self.textLabel.adjustsFontSizeToFitWidth = YES;
 
@@ -54,8 +54,8 @@ static const CGFloat kKeyWidth = 75.0f;
     self.detailTextLabel.highlightedTextColor = TTSTYLEVAR(highlightedTextColor);
 	self.detailTextLabel.backgroundColor = TTSTYLEVAR(backgroundTextColor);
     self.detailTextLabel.adjustsFontSizeToFitWidth = YES;
-    self.detailTextLabel.minimumFontSize = 8;
-    self.detailTextLabel.lineBreakMode = UILineBreakModeWordWrap;
+    self.detailTextLabel.minimumScaleFactor = 8;
+    self.detailTextLabel.lineBreakMode = NSLineBreakByWordWrapping;
     self.detailTextLabel.numberOfLines = 0;
   }
 
@@ -76,15 +76,25 @@ static const CGFloat kKeyWidth = 75.0f;
   CGFloat margin = [tableView tableCellMargin];
   CGFloat width = tableView.width - (kKeyWidth + kKeySpacing + kTableCellHPadding*2 + margin*2);
 
-  CGSize detailTextSize = [item.text sizeWithFont:TTSTYLEVAR(tableSmallFont)
-                                constrainedToSize:CGSizeMake(width, CGFLOAT_MAX)
-                                    lineBreakMode:UILineBreakModeWordWrap];
+    NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+    CGSize detailTextSize = [item.text
+                             boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+                                                    options:NSStringDrawingUsesLineFragmentOrigin
+                                                 attributes:
+  @{NSFontAttributeName:TTSTYLEVAR(tableSmallFont),
+NSParagraphStyleAttributeName:paragraphStyle}
+                                                    context:nil].size;
 
-  CGSize captionTextSize = [item.caption sizeWithFont:TTSTYLEVAR(tableTitleFont)
-                                constrainedToSize:CGSizeMake(kKeyWidth, CGFLOAT_MAX)
-                                    lineBreakMode:UILineBreakModeTailTruncation];
-
-  return MAX(detailTextSize.height, captionTextSize.height) + kTableCellVPadding*2;
+    NSMutableParagraphStyle * paragraphStyleCaption = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyleCaption.lineBreakMode = NSLineBreakByTruncatingTail;
+    CGSize captionTextSize = [item.caption
+                              boundingRectWithSize:CGSizeMake(kKeyWidth, CGFLOAT_MAX)
+                              options:NSStringDrawingUsesLineFragmentOrigin
+                              attributes:@{NSFontAttributeName:TTSTYLEVAR(tableTitleFont),
+                                           NSParagraphStyleAttributeName:paragraphStyleCaption}
+                              context:nil].size;
+    return MAX(detailTextSize.height, captionTextSize.height) + kTableCellVPadding*2;
 }
 
 

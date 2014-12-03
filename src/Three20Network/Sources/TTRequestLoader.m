@@ -267,7 +267,7 @@ static const NSInteger kLoadMaxRetries = 2;
       // Supply an NSError object if request.response's
       // request:processErrorResponse:data: does not return one.
       if (!error) {
-        TTDCONDITIONLOG(TTDFLAG_URLREQUEST, @"  FAILED LOADING (%d) %@", _response.statusCode, _urlPath);
+        TTDCONDITIONLOG(TTDFLAG_URLREQUEST, @"  FAILED LOADING (%ld) %@", (long)_response.statusCode, _urlPath);
         NSDictionary* userInfo = [NSDictionary dictionaryWithObject:data forKey:kTTErrorResponseDataKey];
         error = [NSError errorWithDomain:NSURLErrorDomain code:_response.statusCode userInfo:userInfo];
       }
@@ -399,7 +399,7 @@ static const NSInteger kLoadMaxRetries = 2;
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
   TTNetworkRequestStopped();
 
-  TTDCONDITIONLOG(TTDFLAG_ETAGS, @"Response status code: %d", _response.statusCode);
+  TTDCONDITIONLOG(TTDFLAG_ETAGS, @"Response status code: %ld", (long)_response.statusCode);
   if (![_response respondsToSelector:@selector(statusCode)]){
 	[_queue loader:self didLoadResponse:_response data:_responseData];
   } else if (_response.statusCode == 304) {

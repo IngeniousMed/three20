@@ -60,7 +60,7 @@
 - (id)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
   if (self) {
-    _textAlignment  = UITextAlignmentLeft;
+    _textAlignment  = NSTextAlignmentLeft;
     _contentInset   = UIEdgeInsetsZero;
 
     self.font = TTSTYLEVAR(font);

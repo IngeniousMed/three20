@@ -45,7 +45,7 @@ static const CGFloat kMaxWidth = 250.0f;
     _labelView.backgroundColor = [UIColor clearColor];
     _labelView.textColor = TTSTYLEVAR(textColor);
     _labelView.highlightedTextColor = TTSTYLEVAR(highlightedTextColor);
-    _labelView.lineBreakMode = UILineBreakModeTailTruncation;
+    _labelView.lineBreakMode = NSLineBreakByTruncatingTail;
     [self addSubview:_labelView];
 
     self.backgroundColor = [UIColor clearColor];
@@ -79,7 +79,7 @@ static const CGFloat kMaxWidth = 250.0f;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (CGSize)sizeThatFits:(CGSize)size {
-  CGSize labelSize = [_labelView.text sizeWithFont:_labelView.font];
+  CGSize labelSize = [_labelView.text sizeWithAttributes:@{NSFontAttributeName:_labelView.font}];
   CGFloat width = labelSize.width + kPaddingX*2;
   return CGSizeMake(width > kMaxWidth ? kMaxWidth : width, labelSize.height + kPaddingY*2);
 }

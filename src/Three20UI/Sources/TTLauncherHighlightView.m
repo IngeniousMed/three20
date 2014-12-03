@@ -49,10 +49,10 @@ static const CGFloat kHighlightTextPadding = 20.0f;
     self.alpha = 0.0;
 
     _textLabel = [[UILabel alloc] init];
-    _textLabel.lineBreakMode = UILineBreakModeWordWrap;
+    _textLabel.lineBreakMode = NSLineBreakByWordWrapping;
     _textLabel.numberOfLines = 0;
     _textLabel.backgroundColor = [UIColor clearColor];
-    _textLabel.textAlignment = UITextAlignmentCenter;
+    _textLabel.textAlignment = NSTextAlignmentCenter;
     _textLabel.textColor = [UIColor whiteColor];
     _textLabel.font = [UIFont boldSystemFontOfSize:17.0f];
     _textLabel.shadowColor = [UIColor blackColor];
@@ -103,8 +103,11 @@ static const CGFloat kHighlightTextPadding = 20.0f;
 - (void)layoutLabel {
   CGSize superviewSize = self.superview.bounds.size;
   CGFloat width = superviewSize.width - 2 * kHighlightTextPadding;
-  CGFloat height = [_textLabel.text sizeWithFont:_textLabel.font
-                               constrainedToSize:CGSizeMake(width, superviewSize.height)].height;
+    CGFloat height = [_textLabel.text
+                      boundingRectWithSize:CGSizeMake(width, superviewSize.height)
+                      options:NSStringDrawingUsesLineFragmentOrigin
+                      attributes:@{NSFontAttributeName:_textLabel.font}
+                      context:nil].size.height;
 
   // If the highlighted rect is above center, put the text below it; otherwise, above it.
   CGFloat y = 0.0f;

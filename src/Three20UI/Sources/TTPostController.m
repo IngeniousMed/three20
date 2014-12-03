@@ -136,7 +136,7 @@ static const CGFloat kMarginY = 6.0f;
   _originalStatusBarHidden = app.statusBarHidden;
   if (!_originalStatusBarHidden) {
     [app setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-    [app setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
+    [app setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
   }
   [_textView becomeFirstResponder];
 }

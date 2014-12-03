@@ -66,7 +66,7 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-- (void)setBadgeNumber:(int)value {
+- (void)setBadgeNumber:(NSInteger)value {
   value = value < 0 ? 0 : value;
   _badgeNumber = value;
   [_tabBar performSelector:@selector(tabItem:badgeNumberChangedTo:) withObject:self

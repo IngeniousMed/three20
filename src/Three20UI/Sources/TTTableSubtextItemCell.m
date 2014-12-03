@@ -46,9 +46,9 @@
     self.textLabel.textColor = TTSTYLEVAR(tableSubTextColor);
     self.textLabel.highlightedTextColor = TTSTYLEVAR(highlightedTextColor);
 	self.textLabel.backgroundColor = TTSTYLEVAR(backgroundTextColor);
-    self.textLabel.textAlignment = UITextAlignmentLeft;
+    self.textLabel.textAlignment = NSTextAlignmentLeft;
     self.textLabel.contentMode = UIViewContentModeTop;
-    self.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+    self.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
     self.textLabel.numberOfLines = 0;
   }
 
@@ -68,15 +68,25 @@
 
   CGFloat width = tableView.width - [tableView tableCellMargin]*2 - kTableCellHPadding*2;
 
-  CGSize detailTextSize = [item.text sizeWithFont:TTSTYLEVAR(tableFont)
-                                constrainedToSize:CGSizeMake(width, CGFLOAT_MAX)
-                                    lineBreakMode:UILineBreakModeTailTruncation];
+    NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+    CGSize detailTextSize = [item.text
+                             boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+                             options:NSStringDrawingUsesLineFragmentOrigin
+                             attributes:@{NSFontAttributeName:TTSTYLEVAR(tableFont),
+                                          NSParagraphStyleAttributeName:paragraphStyle}
+                             context:nil].size;
 
-  CGSize textSize = [item.caption sizeWithFont:TTSTYLEVAR(font)
-                             constrainedToSize:CGSizeMake(width, CGFLOAT_MAX)
-                                 lineBreakMode:UILineBreakModeWordWrap];
+    NSMutableParagraphStyle * paragraphStyle2 = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle2.lineBreakMode = NSLineBreakByWordWrapping;
+    CGSize textSize = [item.text
+                       boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+                       options:NSStringDrawingUsesLineFragmentOrigin
+                       attributes:@{NSFontAttributeName:TTSTYLEVAR(font),
+                                    NSParagraphStyleAttributeName:paragraphStyle2}
+                       context:nil].size;
 
-  return kTableCellVPadding*2 + detailTextSize.height + textSize.height;
+    return kTableCellVPadding*2 + detailTextSize.height + textSize.height;
 }
 
 
@@ -103,10 +113,14 @@
     self.detailTextLabel.top = kTableCellVPadding;
 
     CGFloat maxWidth = self.contentView.width - kTableCellHPadding*2;
-    CGSize captionSize =
-    [self.textLabel.text sizeWithFont:self.textLabel.font
-                    constrainedToSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
-                        lineBreakMode:self.textLabel.lineBreakMode];
+      NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+      paragraphStyle.lineBreakMode = self.textLabel.lineBreakMode;
+      CGSize captionSize = [self.textLabel.text
+                            boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
+                            options:NSStringDrawingUsesLineFragmentOrigin
+                            attributes:@{NSFontAttributeName:self.textLabel.font,
+                                         NSParagraphStyleAttributeName:paragraphStyle}
+                            context:nil].size;
     self.textLabel.frame = CGRectMake(kTableCellHPadding, self.detailTextLabel.bottom,
                                       captionSize.width, captionSize.height);
   }

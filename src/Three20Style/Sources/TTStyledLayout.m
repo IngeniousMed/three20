@@ -385,9 +385,9 @@
   }
 
   // Horizontally align all frames on current line if required
-  if (_textAlignment != UITextAlignmentLeft) {
+  if (_textAlignment != NSTextAlignmentLeft) {
     CGFloat remainingSpace = _width - _lineWidth;
-    CGFloat offset = _textAlignment == UITextAlignmentCenter ? remainingSpace/2 : remainingSpace;
+    CGFloat offset = _textAlignment == NSTextAlignmentCenter ? remainingSpace/2 : remainingSpace;
 
     TTStyledFrame* frame = _lineFirstFrame;
     while (frame) {
@@ -704,9 +704,15 @@
 
   if (!textNode.nextSibling && textNode == _rootNode) {
     // This is the only node, so measure it all at once and move on
-    CGSize textSize = [text sizeWithFont:_font
-                            constrainedToSize:CGSizeMake(_width, CGFLOAT_MAX)
-                            lineBreakMode:UILineBreakModeWordWrap];
+      NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+      paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+      CGSize textSize = [text
+                         boundingRectWithSize:CGSizeMake(_width, CGFLOAT_MAX)
+                         options:NSStringDrawingUsesLineFragmentOrigin
+                         attributes:@{NSFontAttributeName:_font,
+                                      NSParagraphStyleAttributeName:paragraphStyle}
+                         context:nil].size;
+
     [self addFrameForText:text element:element node:textNode width:textSize.width
          height:textSize.height];
     _height += textSize.height;
@@ -736,19 +742,19 @@
     CGFloat availWidth = _width ? _width : CGFLOAT_MAX;
 
     // Measure the word and check to see if it fits on the current line
-    CGSize wordSize = [word sizeWithFont:_font];
+    CGSize wordSize = [word sizeWithAttributes:@{NSFontAttributeName:_font}];
     if (wordSize.width > _width) {
       for (NSInteger i = 0; i < word.length; ++i) {
         NSString* c = [word substringWithRange:NSMakeRange(i, 1)];
-        CGSize letterSize = [c sizeWithFont:_font];
+        CGSize letterSize = [c sizeWithAttributes:@{NSFontAttributeName:_font}];
 
         if (_lineWidth + letterSize.width > _width) {
           NSRange lineRange = NSMakeRange(lineStartIndex, stringIndex - lineStartIndex);
           if (lineRange.length) {
             NSString* line = [text substringWithRange:lineRange];
-            frameWidth = [[text substringWithRange:NSMakeRange(frameStart,
-                                                               stringIndex - frameStart)]
-                          sizeWithFont:_font].width;
+            frameWidth = [[text substringWithRange:NSMakeRange(
+                                                               frameStart,stringIndex - frameStart)]
+                          sizeWithAttributes:@{NSFontAttributeName:_font}].width;
             [self addFrameForText:line element:element node:textNode width:frameWidth
                   height:[_font ttLineHeight]];
           }
@@ -769,8 +775,10 @@
       NSRange lineRange = NSMakeRange(lineStartIndex, stringIndex - lineStartIndex);
       if (lineRange.length) {
         NSString* line = [text substringWithRange:lineRange];
-        frameWidth = [[text substringWithRange:NSMakeRange(frameStart, stringIndex - frameStart)]
-                      sizeWithFont:_font].width;
+        frameWidth = [[text substringWithRange:NSMakeRange(frameStart,
+                                                           stringIndex - frameStart)]
+                      sizeWithAttributes:
+  @{NSFontAttributeName:_font}].width;
         [self addFrameForText:line element:element node:textNode width:frameWidth
               height:[_font ttLineHeight]];
 
@@ -785,8 +793,10 @@
         NSRange lineRange = NSMakeRange(lineStartIndex, stringIndex - lineStartIndex);
         if (lineRange.length) {
           NSString* line = [text substringWithRange:lineRange];
-          frameWidth = [[text substringWithRange:NSMakeRange(frameStart, stringIndex - frameStart)]
-                        sizeWithFont:_font].width;
+            frameWidth = [[text substringWithRange:NSMakeRange(frameStart,
+                                                               stringIndex - frameStart)]
+                          sizeWithAttributes:
+  @{NSFontAttributeName:_font}].width;
           [self addFrameForText:line element:element node:textNode width:frameWidth
                 height:[_font ttLineHeight]];
         }
@@ -798,20 +808,26 @@
         frameStart = stringIndex;
       }
 
-      if (!_lineWidth && textNode == _lastNode) {
-        // We are at the start of a new line, and this is the last node, so we don't need to
-        // keep measuring every word.  We can just measure all remaining text and create a new
-        // frame for all of it.
-        NSString* lines = [text substringWithRange:searchRange];
-        CGSize linesSize = [lines sizeWithFont:_font
-                                  constrainedToSize:CGSizeMake(availWidth, CGFLOAT_MAX)
-                                  lineBreakMode:UILineBreakModeWordWrap];
-
-        [self addFrameForText:lines element:element node:textNode width:linesSize.width
-             height:linesSize.height];
-        _height += linesSize.height;
-        break;
-      }
+        if (!_lineWidth && textNode == _lastNode)
+        {
+            // We are at the start of a new line, and this is the last node, so we don't need to
+            // keep measuring every word.  We can just measure all remaining text and create a new
+            // frame for all of it.
+            NSString* lines = [text substringWithRange:searchRange];
+            NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+            paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+            CGRect rectForSize = [lines boundingRectWithSize:
+                                  CGSizeMake(availWidth, CGFLOAT_MAX) options:
+                                  NSStringDrawingUsesLineFragmentOrigin attributes:
+  @{NSFontAttributeName:_font,
+    NSParagraphStyleAttributeName:paragraphStyle}
+                                                     context:nil];
+            CGSize linesSize = rectForSize.size;
+            [self addFrameForText:lines element:element node:textNode width:linesSize.width
+                           height:linesSize.height];
+            _height += linesSize.height;
+            break;
+        }
 
       [self expandLineWidth:wordSize.width];
       [self inflateLineHeight:wordSize.height];
@@ -822,8 +838,9 @@
         NSRange lineRange = NSMakeRange(lineStartIndex, (wordRange.location + wordRange.length)
                                                         - lineStartIndex);
         NSString* line = !_lineWidth ? word : [text substringWithRange:lineRange];
-        frameWidth = [[text substringWithRange:NSMakeRange(frameStart, stringIndex - frameStart)]
-                      sizeWithFont:_font].width;
+        frameWidth = [[text
+                       substringWithRange:NSMakeRange(frameStart, stringIndex - frameStart)]
+                      sizeWithAttributes:@{NSFontAttributeName:_font}].width;
         [self addFrameForText:line element:element node:textNode width:frameWidth
               height:[_font ttLineHeight]];
       }

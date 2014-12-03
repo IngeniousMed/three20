@@ -75,11 +75,6 @@
   // Removes keyboard notification observers for
   self.autoresizesForKeyboard = NO;
 
-  // You would think UIViewController would call this in dealloc, but it doesn't!
-  // I would prefer not to have to redundantly put all view releases in dealloc and
-  // viewDidUnload, so my solution is just to call viewDidUnload here.
-  [self viewDidUnload];
-
   [super dealloc];
 }
 
@@ -96,10 +91,10 @@
 	[[notification.userInfo objectForKey:UIKeyboardBoundsUserInfoKey] getValue:&keyboardBounds];
 
 	CGPoint keyboardStart;
-	[[notification.userInfo objectForKey:UIKeyboardCenterBeginUserInfoKey] getValue:&keyboardStart];
+	[[notification.userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] getValue:&keyboardStart];
 
 	CGPoint keyboardEnd;
-	[[notification.userInfo objectForKey:UIKeyboardCenterEndUserInfoKey] getValue:&keyboardEnd];
+	[[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] getValue:&keyboardEnd];
 
 	BOOL animated = keyboardStart.y != keyboardEnd.y;
   if (animated) {

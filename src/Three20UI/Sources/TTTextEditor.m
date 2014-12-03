@@ -142,10 +142,14 @@ static const CGFloat kUITextViewVerticalPadding = 6.0f;
   if (!text.length) {
     text = @"M";
   }
-
-  CGSize textSize = [text sizeWithFont:self.font
-                          constrainedToSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
-                          lineBreakMode:UILineBreakModeWordWrap];
+    NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+    CGSize textSize = [text boundingRectWithSize:
+                       CGSizeMake(maxWidth, CGFLOAT_MAX) options:
+                       NSStringDrawingUsesLineFragmentOrigin
+                                      attributes:@{NSFontAttributeName:self.font,
+                                                   NSParagraphStyleAttributeName:
+                                                       paragraphStyle} context:nil].size;
 
   CGFloat newHeight = textSize.height;
   if ([text characterAtIndex:text.length-1] == 10) {
