@@ -957,7 +957,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
-				VALID_ARCHS = "armv6 armv7 armv7s arm64";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Internal;
 		};
@@ -1010,7 +1010,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
-				VALID_ARCHS = "armv6 armv7 armv7s arm64";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Debug;
 		};
@@ -1025,7 +1025,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
-				VALID_ARCHS = "armv6 armv7 armv7s arm64";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Release;
 		};

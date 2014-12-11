@@ -290,13 +290,6 @@
 			remoteGlobalIDString = BEF31F3A0F352DF5000DE5D2;
 			remoteInfo = Three20Style;
 		};
-		6E6454A81184D42800F08CB1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6E6454A11184D42800F08CB1 /* Three20Style.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = EB9E6C6210B6A8F800DE563C;
-			remoteInfo = UnitTests;
-		};
 		6E6454AE1184D46800F08CB1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6E6454A11184D42800F08CB1 /* Three20Style.xcodeproj */;
@@ -352,13 +345,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = BEF31F3A0F352DF5000DE5D2;
 			remoteInfo = Three20Network;
-		};
-		6EE738A41184ADB400A35176 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6EE7389D1184ADB400A35176 /* Three20Network.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = EB9E6C6210B6A8F800DE563C;
-			remoteInfo = UnitTests;
 		};
 		6EE738AA1184ADD000A35176 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -736,7 +722,6 @@
 			isa = PBXGroup;
 			children = (
 				6E6454A71184D42800F08CB1 /* libThree20Style.a */,
-				6E6454A91184D42800F08CB1 /* StyleUnitTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1645,7 +1630,6 @@
 			isa = PBXGroup;
 			children = (
 				6EE738A31184ADB400A35176 /* libThree20Network.a */,
-				6EE738A51184ADB400A35176 /* NetworkUnitTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1892,13 +1876,6 @@
 			remoteRef = 6E6454A61184D42800F08CB1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		6E6454A91184D42800F08CB1 /* StyleUnitTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = StyleUnitTests.octest;
-			remoteRef = 6E6454A81184D42800F08CB1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		6EDAEA09118CA5B50008133C /* libThree20UICommon.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1925,13 +1902,6 @@
 			fileType = archive.ar;
 			path = libThree20Network.a;
 			remoteRef = 6EE738A21184ADB400A35176 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		6EE738A51184ADB400A35176 /* NetworkUnitTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = NetworkUnitTests.octest;
-			remoteRef = 6EE738A41184ADB400A35176 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -2144,7 +2114,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
-				VALID_ARCHS = "i386 armv6 armv7 armv7s arm64";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Internal;
 		};
@@ -2152,7 +2122,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6EE7364B11849B3D00A35176 /* Library.xcconfig */;
 			buildSettings = {
-				"ARCHS[sdk=iphoneos*]" = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
+				"ARCHS[sdk=iphoneos*]" = "$(ARCHS_STANDARD)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2167,7 +2138,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6EE7364B11849B3D00A35176 /* Library.xcconfig */;
 			buildSettings = {
-				"ARCHS[sdk=iphoneos*]" = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
+				"ARCHS[sdk=iphoneos*]" = "$(ARCHS_STANDARD)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2179,7 +2151,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6EE7364B11849B3D00A35176 /* Library.xcconfig */;
 			buildSettings = {
-				"ARCHS[sdk=iphoneos*]" = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
+				"ARCHS[sdk=iphoneos*]" = "$(ARCHS_STANDARD)";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ZERO_LINK = NO;
@@ -2197,7 +2170,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
-				VALID_ARCHS = "i386 armv6 armv7 armv7s arm64";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Debug;
 		};
@@ -2212,7 +2185,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
-				VALID_ARCHS = "i386 armv6 armv7 armv7s arm64";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Release;
 		};

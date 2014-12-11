@@ -32,13 +32,6 @@
 			remoteGlobalIDString = BEF31F3A0F352DF5000DE5D2;
 			remoteInfo = Three20Core;
 		};
-		6EE7366D11849C5800A35176 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6EE7366611849C5800A35176 /* Three20Core.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = EB9E6C6210B6A8F800DE563C;
-			remoteInfo = UnitTests;
-		};
 		6EE7367011849C6300A35176 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6EE7366611849C5800A35176 /* Three20Core.xcodeproj */;
@@ -184,7 +177,6 @@
 			isa = PBXGroup;
 			children = (
 				6EE7366C11849C5800A35176 /* libThree20Core.a */,
-				6EE7366E11849C5800A35176 /* CoreUnitTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -284,13 +276,6 @@
 			remoteRef = 6EE7366B11849C5800A35176 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		6EE7366E11849C5800A35176 /* CoreUnitTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = CoreUnitTests.octest;
-			remoteRef = 6EE7366D11849C5800A35176 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -361,7 +346,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
-				VALID_ARCHS = "armv6 armv7 armv7s arm64 i386";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Internal;
 		};
@@ -417,7 +402,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
-				VALID_ARCHS = "armv6 armv7 armv7s arm64 i386";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Debug;
 		};
@@ -432,7 +417,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
-				VALID_ARCHS = "armv6 armv7 armv7s arm64 i386";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Release;
 		};
